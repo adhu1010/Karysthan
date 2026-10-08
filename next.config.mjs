@@ -14,6 +14,20 @@ const nextConfig = {
     };
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/',
+        has: [
+          {
+            type: 'host',
+            value: '(.*adhwaith\\.me.*)',
+          },
+        ],
+        destination: '/ad/index.html',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
