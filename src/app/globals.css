@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 15, 23, 42;
+  --background-start-rgb: 254, 253, 248;
+  --background-end-rgb: 241, 248, 243;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: radial-gradient(circle at 10% 20%, rgba(20, 83, 45, 0.04) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(217, 119, 6, 0.04) 0%, transparent 40%),
+              #fbfdfa;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.font-malayalam {
+  font-family: 'Anek Malayalam', 'Manjari', 'Gayathri', sans-serif;
+  line-height: 1.6;
+}
+
+/* Kerala Kasavu gold border & shimmer effect */
+.kasavu-border {
+  border-image: linear-gradient(to right, #d97706, #fbbf24, #d97706) 1;
+}
+
+.kasavu-badge {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #f59e0b;
+}
+
+.kerala-mesh {
+  background-color: #064e3b;
+  background-image: 
+    radial-gradient(at 10% 20%, rgba(16, 185, 129, 0.25) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(245, 158, 11, 0.2) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(5, 150, 105, 0.3) 0px, transparent 60%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
