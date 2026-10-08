@@ -5,7 +5,6 @@ import {
   ShieldCheck, 
   Clock, 
   MapPin, 
-  CheckCircle, 
   ArrowRight, 
   Sparkles, 
   Wrench, 
@@ -13,6 +12,8 @@ import {
   Hammer, 
   Users 
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 
 interface HeroProps {
   onSelectCategory: (category: string) => void;
@@ -20,6 +21,15 @@ interface HeroProps {
 }
 
 export default function Hero({ onSelectCategory, onSetRole }: HeroProps) {
+  const { language } = useLanguage();
+  const t = translations[language].hero;
+
+  const categoryPills = [
+    { name: t.plumbing, id: 'Plumbing', icon: Wrench, color: 'hover:border-blue-300 hover:bg-blue-50/50' },
+    { name: t.electrical, id: 'Electrical', icon: Zap, color: 'hover:border-amber-300 hover:bg-amber-50/50' },
+    { name: t.carpentry, id: 'Carpentry', icon: Hammer, color: 'hover:border-orange-300 hover:bg-orange-50/50' },
+  ];
+
   return (
     <section className="relative overflow-hidden pt-8 pb-16 md:pt-16 md:pb-24">
       {/* Decorative background glows */}
@@ -34,26 +44,26 @@ export default function Hero({ onSelectCategory, onSetRole }: HeroProps) {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs sm:text-sm font-medium mb-6 shadow-sm">
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
             <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-            <span className="font-semibold">കൊച്ചിയിലെ വിശ്വസ്ത സേവനങ്ങൾ</span>
+            <span className="font-semibold">{t.badge}</span>
             <span className="text-emerald-500">•</span>
-            <span className="text-emerald-700">Hyperlocal Task Marketplace</span>
+            <span className="text-emerald-700">{t.badgeSub}</span>
           </div>
 
-          {/* Main Title in Malayalam & English */}
+          {/* Main Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-stone-900 tracking-tight leading-[1.2] mb-6">
-            വീട്ടുപണികൾ ഇനി{' '}
+            {t.titleLine1}{' '}
             <span className="bg-gradient-to-r from-emerald-800 via-emerald-600 to-teal-700 bg-clip-text text-transparent underline decoration-amber-400 decoration-wavy decoration-2">
-              ടെൻഷനില്ലാതെ!
+              {t.titleStress}
             </span>
             <br />
-            <span className="text-stone-800 font-malayalam text-3xl sm:text-4xl lg:text-5xl block mt-2 font-bold">
-              കൊച്ചിയുടെ സ്വന്തം കാര്യസ്ഥൻ.
+            <span className={`text-stone-800 text-3xl sm:text-4xl lg:text-5xl block mt-2 font-bold ${language === 'ml' ? 'font-malayalam' : 'font-sans'}`}>
+              {t.titleLine2}
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto mb-8 font-normal">
-            പ്ലംബിംഗ്, ഇലക്ട്രിക്കൽ, കാർപെന്ററി തുടങ്ങിയ വീട്ടുജോലികൾക്കായി വിശ്വസ്തരായ നാട്ടിലെ ചേട്ടന്മാർ ഇനി നിങ്ങളുടെ വിരൽത്തുമ്പിൽ. ഇടനിലക്കാരില്ല, ന്യായമായ കൂലി, കൃത്യസമയത്ത് വാതിൽപ്പടിയിൽ.
+            {t.desc}
           </p>
 
           {/* Dual Action CTAs for Customers and Technicians */}
@@ -63,7 +73,7 @@ export default function Hero({ onSelectCategory, onSetRole }: HeroProps) {
               onClick={() => onSetRole('customer')}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-base shadow-lg shadow-emerald-900/25 hover:shadow-xl transition-all duration-200 group"
             >
-              <span>എനിക്ക് സഹായം വേണം (Find Help)</span>
+              <span>{t.ctaCustomer}</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>
 
@@ -73,21 +83,17 @@ export default function Hero({ onSelectCategory, onSetRole }: HeroProps) {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-amber-50 hover:bg-amber-100/80 text-amber-900 border border-amber-300 font-semibold text-base transition-all duration-200 shadow-sm"
             >
               <Users className="w-4 h-4 text-amber-700" />
-              <span>ഞാൻ ഒരു തൊഴിലാളിയാണ് (Join as Tech)</span>
+              <span>{t.ctaTech}</span>
             </a>
           </div>
 
           {/* Quick category pills */}
           <div className="pt-2 pb-6 border-t border-stone-200/60 max-w-2xl mx-auto">
             <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 mb-3">
-              പ്രധാന സേവനങ്ങൾ തിരഞ്ഞെടുക്കുക (Instant Categories):
+              {t.categoryPrompt}
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              {[
-                { name: 'പ്ലംബിംഗ് (Plumbing)', id: 'Plumbing', icon: Wrench, color: 'hover:border-blue-300 hover:bg-blue-50/50' },
-                { name: 'ഇലക്ട്രിക്കൽ (Electrical)', id: 'Electrical', icon: Zap, color: 'hover:border-amber-300 hover:bg-amber-50/50' },
-                { name: 'കാർപെന്ററി (Carpentry)', id: 'Carpentry', icon: Hammer, color: 'hover:border-orange-300 hover:bg-orange-50/50' },
-              ].map((item) => (
+              {categoryPills.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => {
@@ -109,32 +115,32 @@ export default function Hero({ onSelectCategory, onSetRole }: HeroProps) {
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
               <Clock className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
-                <p className="text-xs font-bold text-stone-900">30-45 മിനിറ്റ്</p>
-                <p className="text-[11px] text-stone-500">വേഗത്തിലുള്ള സേവനം</p>
+                <p className="text-xs font-bold text-stone-900">{language === 'ml' ? '30-45 മിനിറ്റ്' : '30-45 Mins'}</p>
+                <p className="text-[11px] text-stone-500">{language === 'ml' ? 'വേഗത്തിലുള്ള സേവനം' : 'Express Response'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
               <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
-                <p className="text-xs font-bold text-stone-900">100% വെരിഫൈഡ്</p>
-                <p className="text-[11px] text-stone-500">പോലീസ് & ID പരിശോധന</p>
+                <p className="text-xs font-bold text-stone-900">{language === 'ml' ? '100% വെരിഫൈഡ്' : '100% Verified'}</p>
+                <p className="text-[11px] text-stone-500">{language === 'ml' ? 'പോലീസ് & ID പരിശോധന' : 'Police & ID Checked'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
               <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
               <div>
-                <p className="text-xs font-bold text-stone-900">ന്യായമായ കൂലി</p>
-                <p className="text-[11px] text-stone-500">മറച്ചുവെച്ച നിരക്കുകളില്ല</p>
+                <p className="text-xs font-bold text-stone-900">{language === 'ml' ? 'ന്യായമായ കൂലി' : 'Fair Rates'}</p>
+                <p className="text-[11px] text-stone-500">{language === 'ml' ? 'മറച്ചുവെച്ച നിരക്കുകളില്ല' : 'No Hidden Charges'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/80 border border-emerald-100 shadow-2xs">
               <MapPin className="w-5 h-5 text-teal-600 shrink-0" />
               <div>
-                <p className="text-xs font-bold text-stone-900">നാട്ടിലെ ആൾക്കാർ</p>
-                <p className="text-[11px] text-stone-500">Local Kochi Technicians</p>
+                <p className="text-xs font-bold text-stone-900">{language === 'ml' ? 'നാട്ടിലെ ആൾക്കാർ' : 'Local Craftsmen'}</p>
+                <p className="text-[11px] text-stone-500">{language === 'ml' ? 'വിശ്വസ്തരായ തൊഴിലാളികൾ' : 'Trusted Kochi Handymen'}</p>
               </div>
             </div>
           </div>

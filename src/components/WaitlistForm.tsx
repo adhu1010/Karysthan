@@ -6,23 +6,20 @@ import {
   User, 
   Wrench, 
   MapPin, 
-  Phone, 
   Mail, 
   CheckCircle, 
   AlertCircle, 
   Loader2, 
   Sparkles, 
-  Building2, 
   ShieldCheck, 
   Share2, 
-  Hammer, 
-  Zap,
-  Clock,
   Briefcase,
   ChevronDown
 } from 'lucide-react';
 import MalayalamInputBox from './MalayalamInputBox';
 import { submitWaitlistEntry, isSupabaseConfigured, WaitlistEntry } from '@/lib/supabase';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 
 // Popular Kochi localities
 export const KOCHI_LOCALITIES = [
@@ -59,6 +56,9 @@ export default function WaitlistForm({
   onRoleChange,
   onOpenSetupModal,
 }: WaitlistFormProps) {
+  const { language } = useLanguage();
+  const t = translations[language].waitlist;
+
   // Form State
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -93,63 +93,60 @@ export default function WaitlistForm({
         colors: ['#044728', '#10b981', '#f59e0b', '#fbbf24', '#0284c7'],
       });
     } catch (e) {
-      // ignore in non-browser
+      // ignore
     }
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let raw = e.target.value.replace(/\D/g, '');
-    if (raw.startsWith('91') && raw.length > 10) {
-      raw = raw.slice(2);
-    } else if (raw.startsWith('0') && raw.length > 10) {
-      raw = raw.slice(1);
+    let clean = e.target.value.replace(/\D/g, '');
+    if (clean.length > 10) {
+      clean = clean.slice(-10);
     }
-    setPhone(raw.slice(0, 10));
+    setPhone(clean);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    // Basic Validation
     if (!name.trim()) {
-      setErrorMessage('ദയവായി നിങ്ങളുടെ പേര് നൽകുക (Please enter your name)');
+      setErrorMessage(language === 'ml' ? 'ദയവായി നിങ്ങളുടെ പേര് നൽകുക.' : 'Please enter your name.');
       return;
     }
 
-    const cleanPhone = phone.replace(/[^0-9]/g, '');
-    if (cleanPhone.length !== 10 || !/^[6-9]\d{9}$/.test(cleanPhone)) {
-      setErrorMessage('ദയവായി സാധുവായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക (Please enter a valid 10-digit Indian mobile number)');
+    const cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      setErrorMessage(language === 'ml' ? 'ദയവായി സാധുവായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക.' : 'Please enter a valid 10-digit mobile number.');
       return;
     }
 
     setIsSubmitting(true);
 
-    const payload = {
-      user_type: activeRole,
-      name: name.trim(),
-      phone: cleanPhone,
-      email: email.trim() || undefined,
-      locality,
-      category: selectedCategory,
-      malayalam_description: malayalamDescription.trim() || 'വിവരണം നൽകിയിട്ടില്ല',
-      experience_years: activeRole === 'technician' ? experienceYears : undefined,
-      urgency: activeRole === 'customer' ? urgency : undefined,
-      tools_available: activeRole === 'technician' ? toolsAvailable : null,
-    };
-
     try {
-      const result = await submitWaitlistEntry(payload);
+      const entry: WaitlistEntry = {
+        name: name.trim(),
+        phone: cleanPhone,
+        email: email.trim() || undefined,
+        locality,
+        user_type: activeRole,
+        category: selectedCategory || 'Plumbing',
+        malayalam_description: malayalamDescription.trim() || undefined,
+        urgency: activeRole === 'customer' ? urgency : undefined,
+        experience_years: activeRole === 'technician' ? experienceYears : undefined,
+        tools_available: activeRole === 'technician' ? toolsAvailable : undefined,
+      };
+
+      const result = await submitWaitlistEntry(entry);
 
       if (result.success) {
-        setIsMockResult(result.isMock);
-        setSubmittedData(payload);
+        setSubmittedData(result.data);
+        setIsMockResult(!!result.isMock);
         triggerConfetti();
       } else {
-        setErrorMessage(result.message || 'രജിസ്ട്രേഷൻ പരാജയപ്പെട്ടു. ദയവായി വീണ്ടും ശ്രമിക്കുക.');
+        setErrorMessage(result.error || (language === 'ml' ? 'സബ്മിഷൻ പരാജയപ്പെട്ടു. ദയവായി വീണ്ടും ശ്രമിക്കുക.' : 'Submission failed. Please try again.'));
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'ഒരു അപ്രതീക്ഷിത പിശക് സംഭവിച്ചു.');
+      setErrorMessage(err.message || (language === 'ml' ? 'ഒരു അപ്രതീക്ഷിത പിശക് സംഭവിച്ചു.' : 'An unexpected error occurred.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -177,13 +174,13 @@ export default function WaitlistForm({
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-800/80 border border-emerald-600/40 text-emerald-200 text-xs font-semibold mb-2">
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Early Access Waitlist</span>
+                  <span>{t.tag}</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold font-malayalam tracking-tight text-white">
-                  കാര്യസ്ഥൻ വെയ്റ്റ്‌ലിസ്റ്റ് രജിസ്ട്രേഷൻ
+                <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                  {activeRole === 'customer' ? t.headingCustomer : t.headingTech}
                 </h3>
                 <p className="text-xs sm:text-sm text-emerald-200/90 mt-1 max-w-md">
-                  കൊച്ചിയിലെ ആദ്യ 500 ഉപഭോക്താക്കൾക്കും വിദഗ്ദ്ധ തൊഴിലാളികൾക്കും പ്രത്യേക ആനുകൂല്യങ്ങൾ!
+                  {activeRole === 'customer' ? t.subCustomer : t.subTech}
                 </p>
               </div>
 
@@ -199,7 +196,7 @@ export default function WaitlistForm({
                   }`}
                 >
                   <User className="w-4 h-4" />
-                  <span>ഉപഭോക്താവ് (Customer)</span>
+                  <span>{t.roleCustomerTab}</span>
                 </button>
 
                 <button
@@ -212,7 +209,7 @@ export default function WaitlistForm({
                   }`}
                 >
                   <Wrench className="w-4 h-4" />
-                  <span>തൊഴിലാളി (Technician)</span>
+                  <span>{t.roleTechTab}</span>
                 </button>
               </div>
             </div>
@@ -228,38 +225,40 @@ export default function WaitlistForm({
                 </div>
 
                 <div className="space-y-2 max-w-lg mx-auto">
-                  <h4 className="text-2xl font-bold text-stone-900 font-malayalam">
-                    അഭിനന്ദനങ്ങൾ, {submittedData.name}!
+                  <h4 className="text-2xl font-bold text-stone-900">
+                    {t.successTitle} {submittedData.name}!
                   </h4>
-                  <p className="text-sm text-stone-600 font-malayalam leading-relaxed">
-                    നിങ്ങൾ കാര്യസ്ഥൻ കൊച്ചി വെയ്റ്റ്‌ലിസ്റ്റിൽ വിജയകരമായി ഇടം നേടിയിരിക്കുന്നു. ഞങ്ങളുടെ ടീം നിങ്ങളുടെ WhatsApp നമ്പറിലേക്ക് (+91 {submittedData.phone}) ഉടൻ വിവരങ്ങൾ അയക്കും.
+                  <p className="text-sm text-stone-600 leading-relaxed">
+                    {submittedData.user_type === 'customer' ? t.successCustomerDesc : t.successTechDesc}
                   </p>
                 </div>
 
                 {/* Registration summary card */}
                 <div className="max-w-md mx-auto bg-stone-50 rounded-2xl p-4 border border-stone-200 text-left text-xs space-y-2 font-mono">
                   <div className="flex justify-between py-1 border-b border-stone-200">
-                    <span className="text-stone-500">റോൾ:</span>
+                    <span className="text-stone-500">{language === 'ml' ? 'റോൾ:' : 'Role:'}</span>
                     <span className="font-semibold text-stone-800">
-                      {submittedData.user_type === 'customer' ? 'Customer (ഉപഭോക്താവ്)' : 'Technician (തൊഴിലാളി)'}
+                      {submittedData.user_type === 'customer' ? 'Customer' : 'Craftsman / Technician'}
                     </span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-stone-200">
-                    <span className="text-stone-500">സ്ഥലം (Kochi):</span>
+                    <span className="text-stone-500">{language === 'ml' ? 'സ്ഥലം:' : 'Kochi Locality:'}</span>
                     <span className="font-semibold text-stone-800 uppercase">
-                      {KOCHI_LOCALITIES.find((l) => l.id === submittedData.locality)?.nameEn || submittedData.locality}
+                      {KOCHI_LOCALITIES.find((l) => l.id === submittedData.locality)?.[language === 'ml' ? 'nameMl' : 'nameEn'] || submittedData.locality}
                     </span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-stone-200">
-                    <span className="text-stone-500">വിഭാഗം:</span>
+                    <span className="text-stone-500">{language === 'ml' ? 'വിഭാഗം:' : 'Category:'}</span>
                     <span className="font-semibold text-emerald-800">{submittedData.category}</span>
                   </div>
-                  <div className="py-1">
-                    <span className="text-stone-500 block mb-1">വിവരണം:</span>
-                    <span className="font-sans text-stone-800 italic block font-malayalam">
-                      &quot;{submittedData.malayalam_description}&quot;
-                    </span>
-                  </div>
+                  {submittedData.malayalam_description && (
+                    <div className="py-1">
+                      <span className="text-stone-500 block mb-1">{language === 'ml' ? 'വിവരണം:' : 'Description:'}</span>
+                      <span className="font-sans text-stone-800 italic block">
+                        &quot;{submittedData.malayalam_description}&quot;
+                      </span>
+                    </div>
+                  )}
                   {isMockResult && (
                     <div className="mt-2 pt-2 border-t border-amber-200 text-amber-800 text-[11px] font-sans flex items-center justify-between">
                       <span>⚡ Local Demo Mode (Browser Storage)</span>
@@ -277,21 +276,23 @@ export default function WaitlistForm({
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
                   <a
                     href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                      `ഞാൻ കൊച്ചിയുടെ പുതിയ ടാസ്ക് പ്ലാറ്റ്ഫോമായ 'കാര്യസ്ഥൻ (Karyasthan)' വെയ്റ്റ്‌ലിസ്റ്റിൽ ജോയിൻ ചെയ്തു! പ്ലംബിംഗ്, ഇലക്ട്രിക്കൽ ജോലികൾ ഇനി എളുപ്പത്തിൽ. നിങ്ങളും നോക്കൂ:`
+                      language === 'ml'
+                        ? "ഞാൻ കൊച്ചിയുടെ പുതിയ ടാസ്ക് പ്ലാറ്റ്ഫോമായ 'കാര്യസ്ഥൻ (Karyasthan)' വെയ്റ്റ്‌ലിസ്റ്റിൽ ജോയിൻ ചെയ്തു! പ്ലംബിംഗ്, ഇലക്ട്രിക്കൽ ജോലികൾ ഇനി എളുപ്പത്തിൽ. നിങ്ങളും നോക്കൂ:"
+                        : "I joined the waitlist for Karyasthan - Kochi's fastest on-demand home tasks app! Check it out:"
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition-all shadow-sm"
                   >
                     <Share2 className="w-4 h-4" />
-                    <span>വാട്സ്ആപ്പിൽ ഷെയർ ചെയ്യുക</span>
+                    <span>{language === 'ml' ? 'വാട്സ്ആപ്പിൽ ഷെയർ ചെയ്യുക' : 'Share on WhatsApp'}</span>
                   </a>
 
                   <button
                     onClick={handleResetForm}
                     className="px-5 py-2.5 rounded-xl border border-stone-300 text-stone-700 hover:bg-stone-100 text-xs font-semibold transition-all"
                   >
-                    മറ്റൊരു എൻട്രി നൽകുക (New Entry)
+                    {t.resetBtn}
                   </button>
                 </div>
               </div>
@@ -315,11 +316,13 @@ export default function WaitlistForm({
                     <>
                       <User className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-semibold font-malayalam">
-                          ഉപഭോക്താക്കൾക്കുള്ള ആനുകൂല്യം (Customer Benefits):
+                        <p className="font-semibold">
+                          {language === 'ml' ? 'ഉപഭോക്താക്കൾക്കുള്ള ആനുകൂല്യം (Customer Benefits):' : 'Customer Early Access Benefits:'}
                         </p>
-                        <p className="text-emerald-800/90 font-malayalam text-xs mt-0.5">
-                          ആദ്യ സർവീസിന് ₹100 ഡിസ്കൗണ്ടും, മുൻഗണനാ അടിസ്ഥാനത്തിലുള്ള 30 മിനിറ്റ് എക്സ്പ്രസ്സ് വിസിറ്റും ലഭ്യമാകും.
+                        <p className="text-emerald-800/90 text-xs mt-0.5">
+                          {language === 'ml'
+                            ? 'ആദ്യ സർവീസിന് ₹100 ഡിസ്കൗണ്ടും, മുൻഗണനാ അടിസ്ഥാനത്തിലുള്ള 30 മിനിറ്റ് എക്സ്പ്രസ്സ് വിസിറ്റും ലഭ്യമാകും.'
+                            : 'First 500 members get ₹100 discount coupon and 30-minute express priority visits.'}
                         </p>
                       </div>
                     </>
@@ -327,11 +330,13 @@ export default function WaitlistForm({
                     <>
                       <Briefcase className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-semibold font-malayalam">
-                          തൊഴിലാളി ചേട്ടന്മാർക്കുള്ള ആനുകൂല്യം (Technician Benefits):
+                        <p className="font-semibold">
+                          {language === 'ml' ? 'തൊഴിലാളി ചേട്ടന്മാർക്കുള്ള ആനുകൂല്യം (Technician Benefits):' : 'Craftsman Partner Benefits:'}
                         </p>
-                        <p className="text-amber-800/90 font-malayalam text-xs mt-0.5">
-                          സീറോ കമ്മീഷൻ, ആദ്യ 3 മാസം 100% സൗജന്യ രജിസ്ട്രേഷൻ, നിങ്ങളുടെ വീടിനടുത്തുള്ള Kakkanad, Edappally ജോലികൾ മാത്രം.
+                        <p className="text-amber-800/90 text-xs mt-0.5">
+                          {language === 'ml'
+                            ? 'സീറോ കമ്മീഷൻ, ആദ്യ 3 മാസം 100% സൗജന്യ രജിസ്ട്രേഷൻ, നിങ്ങളുടെ വീടിനടുത്തുള്ള Kakkanad, Edappally ജോലികൾ മാത്രം.'
+                            : 'Zero commission launch period, direct UPI payments, and jobs strictly within your 5-8km home radius.'}
                         </p>
                       </div>
                     </>
@@ -341,8 +346,8 @@ export default function WaitlistForm({
                 {/* Row 1: Name and WhatsApp Number */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 font-malayalam">
-                      പേര് (Full Name) <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                      {t.nameLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <User className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -351,15 +356,15 @@ export default function WaitlistForm({
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder={activeRole === 'customer' ? 'ഉദാ: അരുൺ കുമാർ' : 'ഉദാ: ജോസഫ് ചേട്ടൻ'}
+                        placeholder={activeRole === 'customer' ? t.namePlaceholderCustomer : t.namePlaceholderTech}
                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-300 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 font-malayalam">
-                      വാട്സ്ആപ്പ് / ഫോൺ നമ്പർ (+91) <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                      {t.phoneLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute left-3.5 top-2.5 flex items-center gap-1 text-stone-500 text-sm font-medium border-r border-stone-200 pr-2">
@@ -371,7 +376,7 @@ export default function WaitlistForm({
                         required
                         value={phone}
                         onChange={handlePhoneChange}
-                        placeholder="98470 12345"
+                        placeholder={t.phonePlaceholder}
                         autoComplete="tel-national"
                         className="w-full pl-16 pr-4 py-2.5 rounded-xl border border-stone-300 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-mono"
                       />
@@ -383,8 +388,8 @@ export default function WaitlistForm({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Locality Selector */}
                   <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 font-malayalam">
-                      കൊച്ചിയിലെ സ്ഥലം (Kochi Locality) <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                      {t.localityLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <MapPin className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -395,7 +400,7 @@ export default function WaitlistForm({
                       >
                         {KOCHI_LOCALITIES.map((loc) => (
                           <option key={loc.id} value={loc.id}>
-                            {loc.nameEn} ({loc.nameMl})
+                            {language === 'ml' ? `${loc.nameMl} (${loc.nameEn})` : `${loc.nameEn} (${loc.nameMl})`}
                           </option>
                         ))}
                       </select>
@@ -405,8 +410,8 @@ export default function WaitlistForm({
 
                   {/* Category Selector */}
                   <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 font-malayalam">
-                      {activeRole === 'customer' ? 'ആവശ്യമായ വിഭാഗം' : 'നിങ്ങളുടെ സ്പെഷ്യലൈസേഷൻ'} <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                      {t.categoryLabel} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Wrench className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -415,12 +420,12 @@ export default function WaitlistForm({
                         onChange={(e) => onSelectCategory(e.target.value)}
                         className="w-full pl-10 pr-8 py-2.5 rounded-xl border border-stone-300 text-stone-800 text-sm focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 bg-white appearance-none cursor-pointer font-medium"
                       >
-                        <option value="Plumbing">പ്ലംബിംഗ് (Plumbing)</option>
-                        <option value="Electrical">ഇലക്ട്രിക്കൽ (Electrical)</option>
-                        <option value="Carpentry">ആശാരിപ്പണി / കാർപെന്ററി (Carpentry)</option>
-                        <option value="Painting">പെയിന്റിംഗ് & വാട്ടർപ്രൂഫിംഗ് (Painting)</option>
-                        <option value="Appliance">ഉപകരണ റിപ്പയർ (Appliance Repair)</option>
-                        <option value="General">മറ്റു സഹായങ്ങൾ (General Handyman)</option>
+                        <option value="Plumbing">{language === 'ml' ? 'പ്ലംബിംഗ് (Plumbing)' : 'Plumbing'}</option>
+                        <option value="Electrical">{language === 'ml' ? 'ഇലക്ട്രിക്കൽ (Electrical)' : 'Electrical'}</option>
+                        <option value="Carpentry">{language === 'ml' ? 'ആശാരിപ്പണി (Carpentry)' : 'Carpentry'}</option>
+                        <option value="Painting">{language === 'ml' ? 'പെയിന്റിംഗ് & വാട്ടർപ്രൂഫിംഗ്' : 'Painting & Waterproofing'}</option>
+                        <option value="Appliance">{language === 'ml' ? 'ഉപകരണ റിപ്പയർ (Appliance Repair)' : 'Appliance Repair'}</option>
+                        <option value="General">{language === 'ml' ? 'മറ്റു സഹായങ്ങൾ (General Handyman)' : 'General Handyman'}</option>
                       </select>
                       <ChevronDown className="w-4 h-4 text-stone-400 absolute right-3.5 top-3.5 pointer-events-none" />
                     </div>
@@ -431,15 +436,15 @@ export default function WaitlistForm({
                 {activeRole === 'customer' ? (
                   // Customer Urgency Selector
                   <div>
-                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 font-malayalam">
-                      എത്ര വേഗത്തിൽ സർവീസ് വേണം? (Urgency Level)
+                    <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                      {t.urgencyLabel}
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {[
-                        { id: 'emergency', label: 'അടിയന്തിരം (1 Hr)', desc: 'Emergency' },
-                        { id: 'today', label: 'ഇന്നുതന്നെ', desc: 'Today' },
-                        { id: 'this_week', label: 'ഈ ആഴ്ച', desc: 'This Week' },
-                        { id: 'flexible', label: 'സൗകര്യംപോലെ', desc: 'Flexible' },
+                        { id: 'emergency', label: t.urgencies.emergency, short: '30-45m' },
+                        { id: 'today', label: t.urgencies.today, short: 'Today' },
+                        { id: 'this_week', label: t.urgencies.this_week, short: 'Week' },
+                        { id: 'flexible', label: t.urgencies.flexible, short: 'Flexible' },
                       ].map((item) => (
                         <button
                           key={item.id}
@@ -451,8 +456,8 @@ export default function WaitlistForm({
                               : 'bg-white border-stone-200 text-stone-600 hover:border-stone-300'
                           }`}
                         >
-                          <div className="font-malayalam font-bold">{item.label}</div>
-                          <div className="text-[10px] text-stone-400">{item.desc}</div>
+                          <div className="font-bold truncate">{item.label}</div>
+                          <div className="text-[10px] text-stone-400">{item.short}</div>
                         </button>
                       ))}
                     </div>
@@ -461,24 +466,24 @@ export default function WaitlistForm({
                   // Technician Specific Fields
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-amber-50/50 border border-amber-200">
                     <div>
-                      <label className="block text-xs font-semibold text-stone-800 uppercase tracking-wider mb-1 font-malayalam">
-                        പ്രവർത്തിപരിചയം (Experience)
+                      <label className="block text-xs font-semibold text-stone-800 uppercase tracking-wider mb-1">
+                        {t.expLabel}
                       </label>
                       <select
                         value={experienceYears}
                         onChange={(e) => setExperienceYears(Number(e.target.value))}
                         className="w-full px-3 py-2 rounded-xl border border-stone-300 text-stone-800 text-xs bg-white"
                       >
-                        <option value={2}>1 - 2 വർഷം (Beginner)</option>
-                        <option value={5}>3 - 5 വർഷം (Skilled)</option>
-                        <option value={8}>6 - 10 വർഷം (Experienced)</option>
-                        <option value={15}>10+ വർഷം (Master Craftsman)</option>
+                        <option value={2}>1 - 2 {language === 'ml' ? 'വർഷം' : 'Years'} (Beginner)</option>
+                        <option value={5}>3 - 5 {language === 'ml' ? 'വർഷം' : 'Years'} (Skilled)</option>
+                        <option value={8}>6 - 10 {language === 'ml' ? 'വർഷം' : 'Years'} (Experienced)</option>
+                        <option value={15}>10+ {language === 'ml' ? 'വർഷം' : 'Years'} (Master Craftsman)</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-stone-800 uppercase tracking-wider mb-1 font-malayalam">
-                        സ്വന്തമായി ടൂളുകൾ ഉണ്ടോ? (Tools Available?)
+                      <label className="block text-xs font-semibold text-stone-800 uppercase tracking-wider mb-1">
+                        {language === 'ml' ? 'സ്വന്തമായി ടൂളുകൾ ഉണ്ടോ?' : 'Own tools & equipment?'}
                       </label>
                       <div className="flex gap-4 pt-1.5">
                         <label className="inline-flex items-center gap-1.5 text-xs text-stone-700 cursor-pointer">
@@ -489,7 +494,7 @@ export default function WaitlistForm({
                             onChange={() => setToolsAvailable(true)}
                             className="text-emerald-600 focus:ring-emerald-500"
                           />
-                          <span>ഉണ്ട് (Yes, I have tools)</span>
+                          <span>{language === 'ml' ? 'ഉണ്ട് (Yes)' : 'Yes, I have full tools'}</span>
                         </label>
                         <label className="inline-flex items-center gap-1.5 text-xs text-stone-700 cursor-pointer">
                           <input
@@ -499,14 +504,14 @@ export default function WaitlistForm({
                             onChange={() => setToolsAvailable(false)}
                             className="text-emerald-600 focus:ring-emerald-500"
                           />
-                          <span>ഇല്ല (Basic only)</span>
+                          <span>{language === 'ml' ? 'ഇല്ല (Basic)' : 'Basic tools only'}</span>
                         </label>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Malayalam Text Description Box Component (As specified in prompt!) */}
+                {/* Malayalam / English Text Description Box Component */}
                 <div className="pt-2">
                   <MalayalamInputBox
                     value={malayalamDescription}
@@ -514,13 +519,17 @@ export default function WaitlistForm({
                     selectedCategory={selectedCategory}
                     label={
                       activeRole === 'customer'
-                        ? 'നിങ്ങളുടെ ആവശ്യത്തിന്റെ വിവരണം (Malayalam Description)'
-                        : 'നിങ്ങൾ ചെയ്യുന്ന പ്രധാന പണികളെക്കുറിച്ച് എഴുതുക (Technician Work Profile)'
+                        ? (language === 'ml' ? 'നിങ്ങളുടെ ആവശ്യത്തിന്റെ വിവരണം' : 'Describe your requirement')
+                        : (language === 'ml' ? 'നിങ്ങൾ ചെയ്യുന്ന പ്രധാന പണികളെക്കുറിച്ച് എഴുതുക' : 'Your craftsman trade profile & experience')
                     }
                     placeholder={
                       activeRole === 'customer'
-                        ? 'ഉദാ: സിങ്കിലെ പൈപ്പിൽ ലീക്കുണ്ട്, പുതിയ ടാപ്പ് മാറ്റണം. വൈകിട്ട് 5 മണിക്ക് മുമ്പ് വരാൻ പറ്റുമോ?'
-                        : 'ഉദാ: 8 വർഷമായി എറണാകുളം, ഇടപ്പള്ളി ഭാഗങ്ങളിൽ പ്ലംബിംഗ് ചെയ്യുന്നു. പുതിയ ഫിറ്റിംഗ്സും റിപ്പയറുകളും ചെയ്യും.'
+                        ? (language === 'ml'
+                            ? 'ഉദാ: സിങ്കിലെ പൈപ്പിൽ ലീക്കുണ്ട്, പുതിയ ടാപ്പ് മാറ്റണം. വൈകിട്ട് 5 മണിക്ക് മുമ്പ് വരാൻ പറ്റുമോ?'
+                            : 'e.g., Pipe leak under sink, need tap replacement. Can technician arrive before 5 PM?')
+                        : (language === 'ml'
+                            ? 'ഉദാ: 8 വർഷമായി എറണാകുളം, ഇടപ്പള്ളി ഭാഗങ്ങളിൽ പ്ലംബിംഗ് ചെയ്യുന്നു. പുതിയ ഫിറ്റിംഗ്സും റിപ്പയറുകളും ചെയ്യും.'
+                            : 'e.g., Working for 8 years across Kakkanad and Edappally doing sanitary plumbing & leak fixing.')
                     }
                   />
                 </div>
@@ -528,7 +537,7 @@ export default function WaitlistForm({
                 {/* Email (Optional) */}
                 <div>
                   <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1 font-sans">
-                    Email Address (Optional)
+                    {t.emailLabel}
                   </label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -536,7 +545,7 @@ export default function WaitlistForm({
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@gmail.com"
+                      placeholder={t.emailPlaceholder}
                       className="w-full pl-10 pr-4 py-2 rounded-xl border border-stone-200 text-stone-800 placeholder-stone-400 text-xs focus:outline-none focus:border-emerald-600"
                     />
                   </div>
@@ -552,15 +561,13 @@ export default function WaitlistForm({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin text-white" />
-                        <span className="font-malayalam">വിവരങ്ങൾ രേഖപ്പെടുത്തുന്നു...</span>
+                        <span>{t.submitting}</span>
                       </>
                     ) : (
                       <>
                         <Sparkles className="w-5 h-5 text-amber-300" />
-                        <span className="font-malayalam">
-                          {activeRole === 'customer'
-                            ? 'വെയ്റ്റ്‌ലിസ്റ്റിൽ സൗജന്യമായി രജിസ്റ്റർ ചെയ്യാം'
-                            : 'വിദഗ്ദ്ധ തൊഴിലാളിയായി രജിസ്റ്റർ ചെയ്യാം'}
+                        <span>
+                          {activeRole === 'customer' ? t.submitCustomer : t.submitTech}
                         </span>
                       </>
                     )}
@@ -569,7 +576,7 @@ export default function WaitlistForm({
                   <div className="flex items-center justify-between mt-3 text-[11px] text-stone-500 px-1">
                     <span className="flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>നിങ്ങളുടെ ഫോൺ നമ്പർ സുരക്ഷിതമായിരിക്കും</span>
+                      <span>{language === 'ml' ? 'നിങ്ങളുടെ വിവരങ്ങൾ 100% സുരക്ഷിതമായിരിക്കും' : 'Your data is 100% private & secure'}</span>
                     </span>
                     <span>
                       {isConfigured ? (
@@ -580,7 +587,7 @@ export default function WaitlistForm({
                           onClick={onOpenSetupModal}
                           className="text-stone-400 hover:text-amber-700 underline"
                         >
-                          Supabase schema & instructions
+                          Supabase Instructions
                         </button>
                       )}
                     </span>

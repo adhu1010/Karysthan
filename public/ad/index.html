@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>കാര്യസ്ഥൻ (Karyasthan) | കൊച്ചിയുടെ സ്വന്തം 30-മിനിറ്റ് ഹോം സർവീസ് ആപ്പ്</title>
+  <title>Karyasthan (കാര്യസ്ഥൻ) | Kochi's 30-Minute On-Demand Home Services App</title>
   
   <!-- SEO & Social Meta -->
-  <meta name="description" content="പ്ലംബിംഗ്, ഇലക്ട്രിക്കൽ, കാർപെന്ററി ജോലികൾക്കായി കൊച്ചിയുടെ വിശ്വസ്തരായ നാട്ടിലെ ചേട്ടന്മാർ 30 മിനിറ്റിൽ വാതിൽപ്പടിയിൽ. Karyasthan - Kochi's fastest on-demand home task app.">
+  <meta name="description" content="Connect with verified plumbers, electricians, and carpenters in Kochi within 30 minutes. Karyasthan - Kochi's fastest on-demand home task app.">
   <meta name="keywords" content="Karyasthan, കാര്യസ്ഥൻ, Kochi plumber, Kochi electrician, Ernakulam handyman, Kakkanad home service, Edappally, Aluva">
-  <meta property="og:title" content="കാര്യസ്ഥൻ (Karyasthan) - കൊച്ചിയുടെ സ്വന്തം ഹോം സർവീസ് ആപ്പ്">
-  <meta property="og:description" content="30 മിനിറ്റിൽ വിശ്വസ്തരായ പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, കാർപെന്റർ ചേട്ടന്മാർ വാതിൽപ്പടിയിൽ!">
-  <meta property="og:image" content="karyasthan-hero.jpg">
+  <meta property="og:title" content="Karyasthan (കാര്യസ്ഥൻ) - Kochi's Own Home Services App">
+  <meta property="og:description" content="Verified plumbers, electricians, and carpenters at your doorstep in 30 minutes!">
+  <meta property="og:image" content="/ad/karyasthan-hero.jpg">
   <meta property="og:url" content="https://adhwaith.me">
   <meta name="twitter:card" content="summary_large_image">
   
@@ -253,6 +253,52 @@ body {
   font-weight: 700;
   padding: 5px 12px;
   border-radius: var(--radius-full);
+}
+
+/* Language Toggle Switcher */
+.lang-switch-container {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 3px 5px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  gap: 3px;
+}
+
+.lang-globe-icon {
+  font-size: 12px;
+  color: var(--primary-emerald);
+  margin-left: 5px;
+  margin-right: 2px;
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.lang-btn[data-lang="ml"] {
+  font-family: var(--font-malayalam);
+}
+
+.lang-btn:hover {
+  color: var(--primary-emerald);
+}
+
+.lang-btn.active {
+  background: var(--primary-emerald);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(6, 78, 59, 0.25);
 }
 
 .btn-primary-glow {
@@ -1014,13 +1060,13 @@ body {
     <div class="container announcement-inner">
       <div class="live-pill">
         <span class="pulsing-dot"></span>
-        <span>കൊച്ചിയിൽ ഇപ്പോൾ ലൈവ് (Early Access)</span>
+        <span data-en="Live in Kochi (Early Access)" data-ml="കൊച്ചിയിൽ ഇപ്പോൾ ലൈവ് (Early Access)">Live in Kochi (Early Access)</span>
       </div>
       <div class="hubs-ticker">
         <span>Kakkanad • Infopark • Edappally • Aluva • Vyttila • Fort Kochi</span>
       </div>
       <a href="https://karysthan.vercel.app" class="quick-link" id="topNavDirectLink">
-        <span>Launch App</span>
+        <span data-en="Launch App" data-ml="ആപ്പ് തുറക്കൂ">Launch App</span>
         <i class="fa-solid fa-arrow-up-right-from-square"></i>
       </a>
     </div>
@@ -1034,14 +1080,21 @@ body {
       </div>
       <div class="brand-text">
         <span class="brand-title">കാര്യസ്ഥൻ</span>
-        <span class="brand-sub">Karyasthan Kochi</span>
+        <span class="brand-sub" data-en="Karyasthan Kochi" data-ml="കൊച്ചിയുടെ സ്വന്തം കാര്യസ്ഥൻ">Karyasthan Kochi</span>
       </div>
     </div>
     
     <div class="nav-actions">
+      <!-- Language Switcher Toggle -->
+      <div class="lang-switch-container" id="adLangSwitch" aria-label="Language Selector">
+        <i class="fa-solid fa-globe lang-globe-icon"></i>
+        <button type="button" class="lang-btn active" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="ml">മലയാളം</button>
+      </div>
+
       <span class="badge-domain">Presented via adhwaith.me</span>
       <a href="https://karysthan.vercel.app" class="btn-primary-glow" id="navCtaBtn">
-        <span>ആപ്പ് തുറക്കൂ (Open App)</span>
+        <span data-en="Open Web App" data-ml="ആപ്പ് തുറക്കൂ">Open Web App</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
     </div>
@@ -1054,33 +1107,32 @@ body {
       <div class="hero-content">
         <div class="ad-tag">
           <i class="fa-solid fa-bolt text-gold"></i>
-          <span>30 മിനിറ്റ് സൂപ്പർഫാസ്റ്റ് റെസ്പോൺസ്</span>
+          <span data-en="30-Minute Superfast Response" data-ml="30 മിനിറ്റ് സൂപ്പർഫാസ്റ്റ് റെസ്പോൺസ്">30-Minute Superfast Response</span>
         </div>
 
-        <h1 class="hero-headline">
-          വീട്ടുപണികൾക്ക് ഇനി നാട്ടിലെ ചേട്ടന്മാർ <span class="highlight-kasavu">വിരൽത്തുമ്പിൽ!</span>
+        <h1 class="hero-headline" id="heroHeadline">
+          <span data-en="Home Repairs in Kochi <span class='highlight-kasavu'>At Your Fingertips!</span>" data-ml="വീട്ടുപണികൾക്ക് ഇനി നാട്ടിലെ ചേട്ടന്മാർ <span class='highlight-kasavu'>വിരൽത്തുമ്പിൽ!</span>">Home Repairs in Kochi <span class="highlight-kasavu">At Your Fingertips!</span></span>
         </h1>
 
-        <p class="hero-desc">
-          ബാത്ത്റൂം പൈപ്പ് ലീക്കോ, സ്വിച്ച് ബോർഡ് കത്തലോ, കട്ടിലിന്റെ പലക ഇളകിയതോ? 
-          ഇടനിലക്കാരില്ലാതെ 100% വെരിഫൈഡ് പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ആശാരി ചേട്ടന്മാരെ കൊച്ചിയിൽ ഉടനടി വിളിക്കാം.
+        <p class="hero-desc" id="heroDesc" data-en="Pipe leak, switchboard sparking, or broken furniture? Call 100% verified plumbers, electricians, and carpenters in Kochi with zero middlemen and upfront fair rates." data-ml="ബാത്ത്റൂം പൈപ്പ് ലീക്കോ, സ്വിച്ച് ബോർഡ് കത്തലോ, കട്ടിലിന്റെ പലക ഇളകിയതോ? ഇടനിലക്കാരില്ലാതെ 100% വെരിഫൈഡ് പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ആശാരി ചേട്ടന്മാരെ കൊച്ചിയിൽ ഉടനടി വിളിക്കാം.">
+          Pipe leak, switchboard sparking, or broken furniture? Call 100% verified plumbers, electricians, and carpenters in Kochi with zero middlemen and upfront fair rates.
         </p>
 
         <!-- Quick Task Cards Picker (Redirects with intent) -->
         <div class="category-chips-wrapper">
-          <p class="chips-title">എന്താണ് നിങ്ങളുടെ ആവശ്യം? (Select Task):</p>
+          <p class="chips-title" data-en="What is your requirement? (Select Task):" data-ml="എന്താണ് നിങ്ങളുടെ ആവശ്യം? (Select Task):">What is your requirement? (Select Task):</p>
           <div class="chips-group" id="chipsGroup">
             <button class="chip active" data-category="Plumbing">
               <i class="fa-solid fa-faucet-drip"></i>
-              <span>പ്ലംബിംഗ് (Plumbing)</span>
+              <span data-en="Plumbing" data-ml="പ്ലംബിംഗ് (Plumbing)">Plumbing</span>
             </button>
             <button class="chip" data-category="Electrical">
               <i class="fa-solid fa-bolt"></i>
-              <span>ഇലക്ട്രിക്കൽ (Electrical)</span>
+              <span data-en="Electrical" data-ml="ഇലക്ട്രിക്കൽ (Electrical)">Electrical</span>
             </button>
             <button class="chip" data-category="Carpentry">
               <i class="fa-solid fa-hammer"></i>
-              <span>ആശാരിപ്പണി (Carpentry)</span>
+              <span data-en="Carpentry" data-ml="ആശാരിപ്പണി (Carpentry)">Carpentry</span>
             </button>
           </div>
         </div>
@@ -1092,14 +1144,14 @@ body {
               <i class="fa-solid fa-rocket"></i>
             </div>
             <div class="btn-label-group">
-              <span class="btn-main-text">സഹായം വേണം (Open Web App)</span>
-              <span class="btn-sub-text">30 മിനിറ്റിൽ സർവീസ് ബുക്ക് ചെയ്യാം →</span>
+              <span class="btn-main-text" data-en="I Need Help (Open Web App)" data-ml="സഹായം വേണം (Open Web App)">I Need Help (Open Web App)</span>
+              <span class="btn-sub-text" data-en="Book service in 30 mins →" data-ml="30 മിനിറ്റിൽ സർവീസ് ബുക്ക് ചെയ്യാം →">Book service in 30 mins →</span>
             </div>
           </a>
 
           <a href="https://karysthan.vercel.app#waitlist" class="btn-secondary-tech" id="techJoinBtn">
             <i class="fa-solid fa-hand-holding-dollar"></i>
-            <span>ഞാൻ ഒരു തൊഴിലാളിയാണ് (Join as Tech)</span>
+            <span data-en="I am a Craftsman (Join as Tech)" data-ml="ഞാൻ ഒരു തൊഴിലാളിയാണ് (Join as Tech)">I am a Craftsman (Join as Tech)</span>
           </a>
         </div>
 
@@ -1108,22 +1160,22 @@ body {
           <div class="stat-item">
             <i class="fa-solid fa-shield-halved text-emerald"></i>
             <div>
-              <strong>100% വെരിഫൈഡ്</strong>
-              <small>പോലീസ് & ആധാർ പരിശോധന</small>
+              <strong data-en="100% Verified" data-ml="100% വെരിഫൈഡ്">100% Verified</strong>
+              <small data-en="Police & ID Checked" data-ml="പോലീസ് & ആധാർ പരിശോധന">Police & ID Checked</small>
             </div>
           </div>
           <div class="stat-item">
             <i class="fa-solid fa-clock text-gold"></i>
             <div>
-              <strong>30-45 മിനിറ്റ്</strong>
-              <small>കൊച്ചി എക്സ്പ്രസ്സ് വിസിറ്റ്</small>
+              <strong data-en="30-45 Minutes" data-ml="30-45 മിനിറ്റ്">30-45 Minutes</strong>
+              <small data-en="Kochi Express Arrival" data-ml="കൊച്ചി എക്സ്പ്രസ്സ് വിസിറ്റ്">Kochi Express Arrival</small>
             </div>
           </div>
           <div class="stat-item">
             <i class="fa-solid fa-wallet text-emerald"></i>
             <div>
-              <strong>₹249 മുതൽ</strong>
-              <small>ന്യായമായ ചെക്കിംഗ് ചാർജ്</small>
+              <strong data-en="From ₹249" data-ml="₹249 മുതൽ">From ₹249</strong>
+              <small data-en="Fair Inspection Fee" data-ml="ന്യായമായ ചെക്കിംഗ് ചാർജ്">Fair Inspection Fee</small>
             </div>
           </div>
         </div>
@@ -1135,7 +1187,8 @@ body {
           <!-- Main Hero Image -->
           <div class="image-frame">
             <img 
-              src="/ad/karyasthan-hero.jpg" onerror="this.onerror=null; this.src='/karyasthan-hero.jpg';" 
+              src="/ad/karyasthan-hero.jpg" 
+              onerror="this.onerror=null; this.src='/karyasthan-hero.jpg';"
               alt="Karyasthan Kochi Home Services Handyman in uniform at modern Kochi Kerala home" 
               class="hero-img"
               id="heroImage"
@@ -1148,17 +1201,17 @@ body {
             <div class="pulse-indicator"></div>
             <i class="fa-solid fa-location-dot"></i>
             <div>
-              <span class="badge-title">കാക്കനാട് & ഇടപ്പള്ളി</span>
-              <span class="badge-status">12+ ടെക്നീഷ്യൻസ് ഇപ്പോൾ അവൈലബിൾ</span>
+              <span class="badge-title" data-en="Kakkanad & Edappally" data-ml="കാക്കനാട് & ഇടപ്പള്ളി">Kakkanad & Edappally</span>
+              <span class="badge-status" data-en="12+ Technicians Available Now" data-ml="12+ ടെക്നീഷ്യൻസ് ഇപ്പോൾ അവൈലബിൾ">12+ Technicians Available Now</span>
             </div>
           </div>
 
-          <!-- Floating Interactive Card 2: Malayalam Speech Input Feature -->
+          <!-- Floating Interactive Card 2: Voice Input Feature -->
           <div class="floating-badge badge-bottom-left">
             <i class="fa-solid fa-microphone-lines text-gold"></i>
             <div>
-              <span class="badge-title">മലയാളത്തിൽ പറയാം</span>
-              <span class="badge-status">&quot;ടാപ്പ് ലീക്കാണ്, പുതിയത് മാറ്റണം&quot;</span>
+              <span class="badge-title" data-en="Voice Input Supported" data-ml="മലയാളത്തിൽ പറയാം">Voice Input Supported</span>
+              <span class="badge-status" data-en='"Tap is leaking, need replacement"' data-ml='"ടാപ്പ് ലീക്കാണ്, പുതിയത് മാറ്റണം"'>"Tap is leaking, need replacement"</span>
             </div>
           </div>
 
@@ -1166,7 +1219,7 @@ body {
           <a href="https://karysthan.vercel.app" class="card-action-bar" id="cardActionLink">
             <div class="card-action-text">
               <span class="badge-kasavu">LIVE WEB APP</span>
-              <strong>karysthan.vercel.app സന്ദർശിക്കൂ</strong>
+              <strong data-en="Visit karysthan.vercel.app" data-ml="karysthan.vercel.app സന്ദർശിക്കൂ">Visit karysthan.vercel.app</strong>
             </div>
             <div class="card-action-arrow">
               <i class="fa-solid fa-arrow-right"></i>
@@ -1182,13 +1235,13 @@ body {
     <div class="activity-inner">
       <div class="activity-label">
         <span class="dot-green"></span>
-        <span>കൊച്ചിയിലെ തത്സമയ വിവരങ്ങൾ:</span>
+        <span data-en="Live Activity in Kochi:" data-ml="കൊച്ചിയിലെ തത്സമയ വിവരങ്ങൾ:">Live Activity in Kochi:</span>
       </div>
       <div class="activity-ticker" id="activityTicker">
-        <span id="tickerContent">കാക്കനാട് ഇൻഫോപാർക്കിൽ നിന്നും രാജേഷ് പ്ലംബർ ബുക്ക് ചെയ്തു (2 മിനിറ്റ് മുൻപ്)</span>
+        <span id="tickerContent">Rajesh booked a plumber from Kakkanad Infopark (2 mins ago)</span>
       </div>
       <a href="https://karysthan.vercel.app" class="btn-ticker-action">
-        നിങ്ങളുടെ ആവശ്യം പറയൂ →
+        <span data-en="Tell your requirement →" data-ml="നിങ്ങളുടെ ആവശ്യം പറയൂ →">Tell your requirement →</span>
       </a>
     </div>
   </section>
@@ -1196,9 +1249,9 @@ body {
   <!-- How It Works Teaser Grid -->
   <section class="features-section container">
     <div class="section-header">
-      <span class="pill-title">എങ്ങനെ പ്രവർത്തിക്കുന്നു?</span>
-      <h2>ലളിതമായ 3 ഘട്ടങ്ങൾ</h2>
-      <p>ഇടനിലക്കാരില്ലാതെ നാട്ടുചേട്ടന്മാർ നിങ്ങളുടെ വാതിൽപ്പടിയിലെത്തും</p>
+      <span class="pill-title" data-en="How It Works" data-ml="എങ്ങനെ പ്രവർത്തിക്കുന്നു?">How It Works</span>
+      <h2 data-en="3 Simple Steps" data-ml="ലളിതമായ 3 ഘട്ടങ്ങൾ">3 Simple Steps</h2>
+      <p data-en="Verified neighborhood handymen at your doorstep with zero middlemen" data-ml="ഇടനിലക്കാരില്ലാതെ നാട്ടുചേട്ടന്മാർ നിങ്ങളുടെ വാതിൽപ്പടിയിലെത്തും">Verified neighborhood handymen at your doorstep with zero middlemen</p>
     </div>
 
     <div class="steps-grid">
@@ -1207,18 +1260,18 @@ body {
         <div class="step-icon">
           <i class="fa-solid fa-mobile-screen-button"></i>
         </div>
-        <h3>ആവശ്യം പറയുക</h3>
-        <p>പ്ലംബിംഗ്, ഇലക്ട്രിക്കൽ ജോലികൾ മലയാളത്തിലോ മംഗ്ലീഷിലോ ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ പറയുക.</p>
+        <h3 data-en="Select & Describe" data-ml="ആവശ്യം പറയുക">Select & Describe</h3>
+        <p data-en="Type or speak your plumbing, electrical, or carpentry needs in plain English or Malayalam." data-ml="പ്ലംബിംഗ്, ഇലക്ട്രിക്കൽ ജോലികൾ മലയാളത്തിലോ മംഗ്ലീഷിലോ ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ പറയുക.">Type or speak your plumbing, electrical, or carpentry needs in plain English or Malayalam.</p>
       </div>
 
       <div class="step-card featured">
-        <div class="step-badge">ഏറ്റവും വേഗത്തിൽ</div>
+        <div class="step-badge" data-en="Superfast" data-ml="ഏറ്റവും വേഗത്തിൽ">Superfast</div>
         <div class="step-num">02</div>
         <div class="step-icon">
           <i class="fa-solid fa-person-walking-luggage"></i>
         </div>
-        <h3>ചേട്ടൻ എത്തുന്നു</h3>
-        <p>30-45 മിനിറ്റിൽ കൊച്ചിയിലെ പോലീസ് വെരിഫൈഡ് ടെക്നീഷ്യൻ നിങ്ങളുടെ വീട്ടിലെത്തും.</p>
+        <h3 data-en="Craftsman Arrives" data-ml="ചേട്ടൻ എത്തുന്നു">Craftsman Arrives</h3>
+        <p data-en="Verified local technician reaches your doorstep in 30-45 minutes." data-ml="30-45 മിനിറ്റിൽ കൊച്ചിയിലെ പോലീസ് വെരിഫൈഡ് ടെക്നീഷ്യൻ നിങ്ങളുടെ വീട്ടിലെത്തും.">Verified local technician reaches your doorstep in 30-45 minutes.</p>
       </div>
 
       <div class="step-card">
@@ -1226,8 +1279,8 @@ body {
         <div class="step-icon">
           <i class="fa-solid fa-circle-check"></i>
         </div>
-        <h3>തൃപ്തിയായാൽ പേയ്‌മെന്റ്</h3>
-        <p>പണി തീർത്ത ശേഷം മാത്രം മുൻകൂട്ടി സമ്മതിച്ച നിരക്കിൽ GPay അല്ലെങ്കിൽ ക്യാഷ് നൽകാം.</p>
+        <h3 data-en="Pay After Satisfaction" data-ml="തൃപ്തിയായാൽ പേയ്‌മെന്റ്">Pay After Satisfaction</h3>
+        <p data-en="Work is completed with quality assurance. Pay fair agreed rates directly via GPay, PhonePe, or Cash." data-ml="പണി തീർത്ത ശേഷം മാത്രം മുൻകൂട്ടി സമ്മതിച്ച നിരക്കിൽ GPay അല്ലെങ്കിൽ ക്യാഷ് നൽകാം.">Work is completed with quality assurance. Pay fair agreed rates directly via GPay, PhonePe, or Cash.</p>
       </div>
     </div>
   </section>
@@ -1236,18 +1289,18 @@ body {
   <section class="redirect-banner container">
     <div class="banner-card">
       <div class="banner-content">
-        <span class="kerala-seal">🌴 കൊച്ചിക്കാർക്കായി മാത്രം</span>
-        <h2>ആദ്യ 500 പേർക്ക് പ്രത്യേക ഡിസ്കൗണ്ടും മുൻഗണനയും!</h2>
-        <p>വെയ്റ്റ്‌ലിസ്റ്റിൽ ഇപ്പോൾ തന്നെ സൗജന്യമായി രജിസ്റ്റർ ചെയ്യാം. ക്രെഡിറ്റ് കാർഡുകൾ ആവശ്യമില്ല.</p>
+        <span class="kerala-seal" data-en="🌴 Exclusive for Kochi Residents" data-ml="🌴 കൊച്ചിക്കാർക്കായി മാത്രം">🌴 Exclusive for Kochi Residents</span>
+        <h2 data-en="First 500 Early Signups Get Priority Booking & Launch Discounts!" data-ml="ആദ്യ 500 പേർക്ക് പ്രത്യേക ഡിസ്കൗണ്ടും മുൻഗണനയും!">First 500 Early Signups Get Priority Booking & Launch Discounts!</h2>
+        <p data-en="Join the early access waitlist now for free. No credit card required." data-ml="വെയ്റ്റ്‌ലിസ്റ്റിൽ ഇപ്പോൾ തന്നെ സൗജന്യമായി രജിസ്റ്റർ ചെയ്യാം. ക്രെഡിറ്റ് കാർഡുകൾ ആവശ്യമില്ല.">Join the early access waitlist now for free. No credit card required.</p>
         
         <div class="banner-btns">
           <a href="https://karysthan.vercel.app#waitlist" class="btn-banner-primary" id="bottomCtaBtn">
-            <span>ആപ്പിലേക്ക് പ്രവേശിക്കുക (Go to App)</span>
+            <span data-en="Launch Web App (Go to App)" data-ml="ആപ്പിലേക്ക് പ്രവേശിക്കുക (Go to App)">Launch Web App (Go to App)</span>
             <i class="fa-solid fa-arrow-right"></i>
           </a>
-          <span class="redirect-note">
+          <span class="redirect-note" data-en="<i class='fa-solid fa-lock text-emerald'></i> 100% Secure • Free Registration" data-ml="<i class='fa-solid fa-lock text-emerald'></i> 100% സുരക്ഷിതം • സൗജന്യ രജിസ്ട്രേഷൻ">
             <i class="fa-solid fa-lock text-emerald"></i>
-            100% സുരക്ഷിതം • സൗജന്യ രജിസ്ട്രേഷൻ
+            100% Secure • Free Registration
           </span>
         </div>
       </div>
@@ -1259,7 +1312,7 @@ body {
     <div class="footer-inner">
       <div class="footer-left">
         <strong>കാര്യസ്ഥൻ (Karyasthan)</strong>
-        <p>കൊച്ചിയുടെ സ്വന്തം ഓൺ-ഡിമാൻഡ് സഹായം | Hosted via adhwaith.me</p>
+        <p data-en="Kochi's Own On-Demand Help | Hosted via adhwaith.me" data-ml="കൊച്ചിയുടെ സ്വന്തം ഓൺ-ഡിമാൻഡ് സഹായം | Hosted via adhwaith.me">Kochi's Own On-Demand Help | Hosted via adhwaith.me</p>
       </div>
       <div class="footer-right">
         <a href="https://karysthan.vercel.app" class="footer-link">Live App: karysthan.vercel.app</a>
@@ -1274,6 +1327,7 @@ body {
 /**
  * കാര്യസ്ഥൻ (Karyasthan) - Ad Landing Interactive Logic
  * Hosted for adhwaith.me -> Redirecting to https://karysthan.vercel.app
+ * Bilingual Support: English (Default) & Malayalam with Dynamic Language Toggle
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1288,8 +1342,90 @@ document.addEventListener('DOMContentLoaded', () => {
   const bottomCtaBtn = document.getElementById('bottomCtaBtn');
   const techJoinBtn = document.getElementById('techJoinBtn');
   const tickerContent = document.getElementById('tickerContent');
+  const langButtons = document.querySelectorAll('.lang-btn');
 
   let selectedCategory = 'Plumbing';
+  let currentLanguage = 'en'; // Default to English as requested
+
+  // Activity Feeds in English & Malayalam
+  const activities = {
+    en: [
+      'Rajesh booked a plumber from Kakkanad Infopark (2 mins ago)',
+      'Fatima booked an electrician from Edappally Toll (4 mins ago)',
+      'Manoj requested carpentry repair from Vyttila Hub (Just now)',
+      'Emergency 30-min plumbing visit dispatched to Aluva (1 min ago)',
+      'Technician arrived for water tap fitting in Palarivattom (3 mins ago)',
+      'Antony registered as certified craftsman from Fort Kochi (5 mins ago)'
+    ],
+    ml: [
+      'കാക്കനാട് ഇൻഫോപാർക്കിൽ നിന്നും രാജേഷ് പ്ലംബർ ബുക്ക് ചെയ്തു (2 മിനിറ്റ് മുൻപ്)',
+      'ഇടപ്പള്ളി ടോൾ ജംഗ്ഷനിൽ നിന്നും ഫാത്തിമ ഇലക്ട്രീഷ്യനെ ബുക്ക് ചെയ്തു (4 മിനിറ്റ് മുൻപ്)',
+      'വൈറ്റില ഹബ്ബിൽ നിന്നും മനോജ് കാർപെന്റർ റിപ്പയർ ആവശ്യപ്പെട്ടു (Just now)',
+      'ആലുവ ബൈപ്പാസിൽ നിന്നും 30 മിനിറ്റ് എമർജൻസി പ്ലംബിംഗ് ബുക്കിംഗ് ലഭിച്ചു (1 മിനിറ്റ് മുൻപ്)',
+      'പാലാരിവട്ടത്ത് നിന്നും വാട്ടർ ടാപ്പ് ഫിറ്റിംഗിനായി ടെക്നീഷ്യൻ എത്തി (3 മിനിറ്റ് മുൻപ്)',
+      'ഫോർട്ട് കൊച്ചിയിൽ നിന്നും ആൻറണി ചേട്ടൻ രജിസ്റ്റർ ചെയ്തു (5 മിനിറ്റ് മുൻപ്)'
+    ]
+  };
+
+  let currentActivityIndex = 0;
+
+  // Language Switch Function
+  function setLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('karyasthan_ad_lang', lang);
+    document.documentElement.lang = lang;
+
+    // Update active state of language buttons
+    langButtons.forEach(btn => {
+      if (btn.getAttribute('data-lang') === lang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update all elements with data-en and data-ml attributes
+    const translatableElements = document.querySelectorAll('[data-en][data-ml]');
+    translatableElements.forEach(el => {
+      const translation = el.getAttribute(`data-${lang}`);
+      if (translation) {
+        el.innerHTML = translation;
+      }
+    });
+
+    // Update links with language query param
+    updateCtaLinks(selectedCategory);
+
+    // Update live ticker immediately
+    if (tickerContent) {
+      tickerContent.textContent = activities[lang][currentActivityIndex];
+    }
+  }
+
+  // Bind Language buttons
+  langButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetLang = btn.getAttribute('data-lang');
+      if (targetLang) {
+        setLanguage(targetLang);
+      }
+    });
+  });
+
+  // Detect URL parameter (?lang=en or ?lang=ml) or localStorage
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramLang = urlParams.get('lang');
+  const storedLang = localStorage.getItem('karyasthan_ad_lang');
+
+  if (paramLang === 'en' || paramLang === 'ml') {
+    setLanguage(paramLang);
+  } else if (storedLang === 'en' || storedLang === 'ml') {
+    setLanguage(storedLang);
+  } else {
+    // Default to English as requested
+    setLanguage('en');
+  }
 
   // Category Selection & Dynamic Deep Link building
   chips.forEach((chip) => {
@@ -1303,34 +1439,37 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function updateCtaLinks(category) {
+    const langParam = `lang=${currentLanguage}`;
     if (mainLaunchBtn) {
-      mainLaunchBtn.href = `${APP_URL}#waitlist?cat=${encodeURIComponent(category)}`;
+      mainLaunchBtn.href = `${APP_URL}?${langParam}#waitlist?cat=${encodeURIComponent(category)}`;
+    }
+    if (navCtaBtn) {
+      navCtaBtn.href = `${APP_URL}?${langParam}`;
+    }
+    if (topNavDirectLink) {
+      topNavDirectLink.href = `${APP_URL}?${langParam}`;
+    }
+    if (cardActionLink) {
+      cardActionLink.href = `${APP_URL}?${langParam}`;
+    }
+    if (bottomCtaBtn) {
+      bottomCtaBtn.href = `${APP_URL}?${langParam}#waitlist`;
+    }
+    if (techJoinBtn) {
+      techJoinBtn.href = `${APP_URL}?${langParam}#waitlist`;
     }
   }
 
-  // Set initial links
-  updateCtaLinks(selectedCategory);
-
-  // Live Activity Feed Ticker for Kochi Neighborhoods
-  const liveActivities = [
-    'കാക്കനാട് ഇൻഫോപാർക്കിൽ നിന്നും രാജേഷ് പ്ലംബർ ബുക്ക് ചെയ്തു (2 മിനിറ്റ് മുൻപ്)',
-    'ഇടപ്പള്ളി ടോൾ ജംഗ്ഷനിൽ നിന്നും ഫാത്തിമ ഇലക്ട്രീഷ്യനെ ബുക്ക് ചെയ്തു (4 മിനിറ്റ് മുൻപ്)',
-    'വൈറ്റില ഹബ്ബിൽ നിന്നും മനോജ് കാർപെന്റർ റിപ്പയർ ആവശ്യപ്പെട്ടു (Just now)',
-    'ആലുവ ബൈപ്പാസിൽ നിന്നും 30 മിനിറ്റ് എമർജൻസി പ്ലംബിംഗ് ബുക്കിംഗ് ലഭിച്ചു (1 മിനിറ്റ് മുൻപ്)',
-    'പാലാരിവട്ടത്ത് നിന്നും വാട്ടർ ടാപ്പ് ഫിറ്റിംഗിനായി ടെക്നീഷ്യൻ എത്തി (3 മിനിറ്റ് മുൻപ്)',
-    'ഫോർട്ട് കൊച്ചിയിൽ നിന്നും ആൻറണി ചേട്ടൻ രജിസ്റ്റർ ചെയ്തു (5 മിനിറ്റ് മുൻപ്)'
-  ];
-
-  let currentActivityIndex = 0;
-
+  // Live Activity Feed Ticker
   if (tickerContent) {
     setInterval(() => {
-      currentActivityIndex = (currentActivityIndex + 1) % liveActivities.length;
+      const activeList = activities[currentLanguage] || activities.en;
+      currentActivityIndex = (currentActivityIndex + 1) % activeList.length;
       tickerContent.style.opacity = '0';
       tickerContent.style.transform = 'translateY(5px)';
       
       setTimeout(() => {
-        tickerContent.textContent = liveActivities[currentActivityIndex];
+        tickerContent.textContent = activeList[currentActivityIndex];
         tickerContent.style.opacity = '1';
         tickerContent.style.transform = 'translateY(0)';
       }, 250);
@@ -1350,8 +1489,6 @@ document.addEventListener('DOMContentLoaded', () => {
   redirectLinks.forEach((link) => {
     if (!link) return;
     link.addEventListener('click', (e) => {
-      // Allow default navigation to karysthan.vercel.app
-      // Add subtle visual press feedback
       link.style.transform = 'scale(0.97)';
       setTimeout(() => {
         link.style.transform = '';
@@ -1360,11 +1497,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Optional: Check if auto-redirect query param is set (?redirect=true or ?auto=true)
-  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('auto') === 'true' || urlParams.get('redirect') === 'true') {
     const delay = parseInt(urlParams.get('delay') || '3', 10) * 1000;
     setTimeout(() => {
-      window.location.href = APP_URL;
+      window.location.href = `${APP_URL}?lang=${currentLanguage}`;
     }, delay);
   }
 });

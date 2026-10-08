@@ -12,12 +12,15 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 
 export interface CategoryInfo {
   id: string;
   nameMalayalam: string;
   nameEnglish: string;
-  tagline: string;
+  taglineMl: string;
+  taglineEn: string;
   icon: any;
   color: string;
   badgeColor: string;
@@ -25,7 +28,8 @@ export interface CategoryInfo {
   activeBorder: string;
   activeBg: string;
   startingPrice: string;
-  popularTasks: string[];
+  popularTasksMl: string[];
+  popularTasksEn: string[];
 }
 
 export const CATEGORIES: CategoryInfo[] = [
@@ -33,7 +37,8 @@ export const CATEGORIES: CategoryInfo[] = [
     id: 'Plumbing',
     nameMalayalam: 'പ്ലംബിംഗ്',
     nameEnglish: 'Plumbing',
-    tagline: 'പൈപ്പ് ലീക്ക്, ടാപ്പ് ഫിറ്റിംഗ്സ് & പമ്പ് ജോലികൾ',
+    taglineMl: 'പൈപ്പ് ലീക്ക്, ടാപ്പ് ഫിറ്റിംഗ്സ് & പമ്പ് ജോലികൾ',
+    taglineEn: 'Pipe leaks, tap & sanitary fittings, water pump repairs',
     icon: Wrench,
     color: 'text-blue-600',
     badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
@@ -41,19 +46,27 @@ export const CATEGORIES: CategoryInfo[] = [
     activeBorder: 'border-blue-600 ring-2 ring-blue-500/20',
     activeBg: 'bg-blue-50/40',
     startingPrice: '₹249',
-    popularTasks: [
+    popularTasksMl: [
       'പൈപ്പ് ലീക്ക് പരിഹരിക്കൽ (Pipe leak repair)',
       'ടാപ്പ് & ഷവർ ഫിക്സിംഗ് (Tap / shower replacement)',
       'ഡ്രെയിനേജ് ബ്ലോക്ക് ക്ലിയറിങ് (Clogged drain removal)',
       'വാട്ടർ മോട്ടോർ & ടാങ്ക് ചെക്കിംഗ് (Pump inspection)',
       'ബാത്ത്റൂം ഫിറ്റിംഗ്സ് (Bathroom accessories installation)',
     ],
+    popularTasksEn: [
+      'Pipe leak repair & joint sealing',
+      'Tap & shower replacement / installation',
+      'Clogged drain removal & cleanout',
+      'Water motor pump & tank checkup',
+      'Bathroom accessories & fittings',
+    ],
   },
   {
     id: 'Electrical',
     nameMalayalam: 'ഇലക്ട്രിക്കൽ',
     nameEnglish: 'Electrical',
-    tagline: 'സ്വിച്ച് ബോർഡ്, വയറിംഗ്, ഫാൻ & ലൈറ്റ് ഫിറ്റിംഗ്',
+    taglineMl: 'സ്വിച്ച് ബോർഡ്, വയറിംഗ്, ഫാൻ & ലൈറ്റ് ഫിറ്റിംഗ്',
+    taglineEn: 'Switchboards, wiring, ceiling fans & light fixtures',
     icon: Zap,
     color: 'text-amber-600',
     badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -61,19 +74,27 @@ export const CATEGORIES: CategoryInfo[] = [
     activeBorder: 'border-amber-600 ring-2 ring-amber-500/20',
     activeBg: 'bg-amber-50/40',
     startingPrice: '₹249',
-    popularTasks: [
+    popularTasksMl: [
       'സ്വിച്ച് ബോർഡ് & സോക്കറ്റ് റിപ്പയർ (Switchboard fix)',
       'സീലിംഗ് ഫാൻ & ലൈറ്റ് ഇൻസ്റ്റാളേഷൻ (Fan & lights)',
       'MCB ട്രിപ്പിംഗ് & ഷോർട്ട് സർക്യൂട്ട് (Fuse / MCB tripping)',
       'ഇൻവെർട്ടർ വയറിംഗ് & ബാറ്ററി സർവീസ് (Inverter check)',
       'എസി പവർ പോയിന്റ് കണക്ഷൻ (AC power point fix)',
     ],
+    popularTasksEn: [
+      'Switchboard & power socket repair',
+      'Ceiling fan & LED light installation',
+      'MCB tripping & short circuit inspection',
+      'Inverter wiring & battery maintenance',
+      'AC power point & heavy appliance wiring',
+    ],
   },
   {
     id: 'Carpentry',
     nameMalayalam: 'ആശാരിപ്പണി / കാർപെന്ററി',
     nameEnglish: 'Carpentry',
-    tagline: 'വാതിൽ ലോക്കുകൾ, കിച്ചൻ ഹിഞ്ചുകൾ & ഫർണിച്ചർ',
+    taglineMl: 'വാതിൽ ലോക്കുകൾ, കിച്ചൻ ഹിഞ്ചുകൾ & ഫർണിച്ചർ',
+    taglineEn: 'Door locks, modular kitchen hinges & furniture repair',
     icon: Hammer,
     color: 'text-orange-600',
     badgeColor: 'bg-orange-50 text-orange-700 border-orange-200',
@@ -81,19 +102,27 @@ export const CATEGORIES: CategoryInfo[] = [
     activeBorder: 'border-orange-600 ring-2 ring-orange-500/20',
     activeBg: 'bg-orange-50/40',
     startingPrice: '₹299',
-    popularTasks: [
+    popularTasksMl: [
       'വാതിൽ കൊളുത്തുകൾ & ലോക്ക് മാറ്റൽ (Lock & latch repair)',
       'മോഡുലാർ കിച്ചൻ ഡ്രോയർ & ഹിഞ്ചുകൾ (Cabinet hinges)',
       'ഫർണിച്ചർ റിപ്പയറിങ് & പോളിഷിംഗ് (Furniture repair)',
       'കർട്ടൻ റോഡ് & ഡ്രില്ലിംഗ് ഫിറ്റിംഗ് (Curtain rod fixing)',
       'കസ്റ്റം ഷെൽഫ് & തടിപ്പണികൾ (Custom woodwork)',
     ],
+    popularTasksEn: [
+      'Door latches & lock repair/replacement',
+      'Modular kitchen drawer & cabinet hinges',
+      'Furniture repair, polishing & assembly',
+      'Curtain rods, wall shelves & drilling',
+      'Custom wooden repairs & adjustments',
+    ],
   },
   {
     id: 'Painting',
     nameMalayalam: 'പെയിന്റിംഗ് & വാട്ടർപ്രൂഫിംഗ്',
     nameEnglish: 'Painting & Waterproofing',
-    tagline: 'കൊച്ചി മഴക്കാല നനവ് & വാൾ പെയിന്റിംഗ്',
+    taglineMl: 'കൊച്ചി മഴക്കാല നനവ് & വാൾ പെയിന്റിംഗ്',
+    taglineEn: 'Monsoon dampness proofing & wall paint touchups',
     icon: Paintbrush,
     color: 'text-emerald-600',
     badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -101,18 +130,25 @@ export const CATEGORIES: CategoryInfo[] = [
     activeBorder: 'border-emerald-600 ring-2 ring-emerald-500/20',
     activeBg: 'bg-emerald-50/40',
     startingPrice: '₹499',
-    popularTasks: [
+    popularTasksMl: [
       'മഴക്കാല നനവ് വാട്ടർപ്രൂഫിംഗ് (Dampness waterproofing)',
       'റൂം പെയിന്റിംഗ് (Interior touchup / single room)',
       'വാൾ ക്രാക്ക് ഫില്ലിംഗ് (Wall crack repair)',
       'ഫംഗസ് & പൂപ്പൽ നീക്കം ചെയ്യൽ (Mould & fungus cleaning)',
+    ],
+    popularTasksEn: [
+      'Monsoon dampness & seepage waterproofing',
+      'Interior touchup / single room painting',
+      'Wall crack filling & putty smoothing',
+      'Mould & fungal stain cleaning',
     ],
   },
   {
     id: 'Appliance',
     nameMalayalam: 'ഉപകരണ റിപ്പയർ',
     nameEnglish: 'Appliance Repair',
-    tagline: 'എസി, വാഷിംഗ് മെഷീൻ, ഫ്രിഡ്ജ് സർവീസ്',
+    taglineMl: 'എസി, വാഷിംഗ് മെഷീൻ, ഫ്രിഡ്ജ് സർവീസ്',
+    taglineEn: 'AC servicing, washing machine & refrigerator fix',
     icon: Tv,
     color: 'text-cyan-600',
     badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200',
@@ -120,18 +156,25 @@ export const CATEGORIES: CategoryInfo[] = [
     activeBorder: 'border-cyan-600 ring-2 ring-cyan-500/20',
     activeBg: 'bg-cyan-50/40',
     startingPrice: '₹349',
-    popularTasks: [
+    popularTasksMl: [
       'എസി ഫിൽട്ടർ ക്ലീനിംഗ് & ഗ്യാസ് ചെക്ക് (AC servicing)',
       'വാഷിംഗ് മെഷീൻ ഡ്രെയിൻ പ്രോബ്ലം (Washing machine)',
       'റഫ്രിജറേറ്റർ കൂളിംഗ് പ്രോബ്ലം (Refrigerator fix)',
       'വാട്ടർ പ്യൂരിഫയർ ഫിൽട്ടർ മാറ്റൽ (Water purifier service)',
+    ],
+    popularTasksEn: [
+      'AC filter deep cleaning & gas check',
+      'Washing machine drain & spin issues',
+      'Refrigerator cooling issue diagnosis',
+      'Water purifier filter replacement',
     ],
   },
   {
     id: 'General',
     nameMalayalam: 'മറ്റു ചെറിയ വീട്ടുസഹായങ്ങൾ',
     nameEnglish: 'General Handyman',
-    tagline: 'ഡ്രില്ലിംഗ്, ടിവി മൗണ്ടിംഗ്, ചെറിയ ഫിക്സിംഗ് ജോലികൾ',
+    taglineMl: 'ഡ്രില്ലിംഗ്, ടിവി മൗണ്ടിംഗ്, ചെറിയ ഫിക്സിംഗ് ജോലികൾ',
+    taglineEn: 'Drilling, TV wall mounting, frame hanging & repairs',
     icon: HelpCircle,
     color: 'text-purple-600',
     badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
@@ -139,11 +182,17 @@ export const CATEGORIES: CategoryInfo[] = [
     activeBorder: 'border-purple-600 ring-2 ring-purple-500/20',
     activeBg: 'bg-purple-50/40',
     startingPrice: '₹199',
-    popularTasks: [
+    popularTasksMl: [
       'ടിവി വാൾ മൗണ്ടിംഗ് (TV wall mounting)',
       'ഫ്രെയിമുകൾ & കണ്ണാടി തൂക്കൽ (Drilling & hanging)',
       'സീലിംഗ് ക്ലോത്ത്സ് ഡ്രയർ ഫിക്സിംഗ് (Cloth drying rack)',
       'ചെറിയ ഷിഫ്റ്റിംഗ് സഹായം (Light furniture shifting)',
+    ],
+    popularTasksEn: [
+      'TV wall mounting & bracket fitment',
+      'Mirrors & picture frame hanging',
+      'Ceiling clothes drying rack installation',
+      'Light shifting & handyman fixes',
     ],
   },
 ];
@@ -157,6 +206,9 @@ export default function CategorySelector({
   selectedCategory,
   onSelectCategory,
 }: CategorySelectorProps) {
+  const { language } = useLanguage();
+  const t = translations[language].categories;
+
   return (
     <section id="category-section" className="py-12 bg-stone-50/60 border-y border-stone-200/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -164,24 +216,28 @@ export default function CategorySelector({
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-xs font-semibold mb-3">
             <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-            <span>നിങ്ങൾക്ക് ആവശ്യമായ സർവീസ് തിരഞ്ഞെടുക്കുക</span>
+            <span>{t.badge}</span>
           </div>
           <h2 className="text-3xl font-extrabold text-stone-900 tracking-tight mb-3">
-            പ്രധാന സർവീസ് വിഭാഗങ്ങൾ
+            {t.heading}
             <span className="block text-lg font-medium text-stone-500 mt-1 font-sans">
-              Choose your service category
+              {t.subheading}
             </span>
           </h2>
           <p className="text-sm text-stone-600">
-            നിങ്ങളുടെ ആവശ്യമുള്ള വിഭാഗം ക്ലിക്ക് ചെയ്യുക. താഴെയുള്ള ഫോമിലേക്ക് ഈ വിഭാഗം തനിയെ ചേർക്കപ്പെടുന്നതാണ്.
+            {t.desc}
           </p>
         </div>
 
-        {/* Primary 3 Categories Grid (Plumbing, Electrical, Carpentry) highlighted, plus secondary */}
+        {/* Primary 3 Categories Grid (Plumbing, Electrical, Carpentry) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {CATEGORIES.slice(0, 3).map((cat) => {
             const isSelected = selectedCategory === cat.id;
             const Icon = cat.icon;
+            const name = language === 'ml' ? cat.nameMalayalam : cat.nameEnglish;
+            const subName = language === 'ml' ? cat.nameEnglish : cat.nameMalayalam;
+            const tagline = language === 'ml' ? cat.taglineMl : cat.taglineEn;
+            const popularTasks = language === 'ml' ? cat.popularTasksMl : cat.popularTasksEn;
 
             return (
               <div
@@ -206,7 +262,7 @@ export default function CategorySelector({
                 {isSelected && (
                   <div className="absolute top-4 right-4 flex items-center gap-1 bg-emerald-800 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-sm animate-fade-in">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>തിരഞ്ഞെടുത്തു</span>
+                    <span>{t.selected}</span>
                   </div>
                 )}
 
@@ -217,25 +273,25 @@ export default function CategorySelector({
                     <Icon className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-stone-900 font-malayalam flex items-baseline gap-2">
-                      {cat.nameMalayalam}
+                    <h3 className={`text-xl font-bold text-stone-900 flex items-baseline gap-2 ${language === 'ml' ? 'font-malayalam' : 'font-sans'}`}>
+                      {name}
                     </h3>
                     <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 font-sans">
-                      {cat.nameEnglish}
+                      {subName}
                     </p>
                   </div>
                 </div>
 
                 <p className="text-xs text-stone-600 mb-4 line-clamp-2">
-                  {cat.tagline}
+                  {tagline}
                 </p>
 
                 {/* Popular tasks checklist */}
                 <div className="space-y-1.5 pt-3 border-t border-stone-100">
                   <p className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
-                    സാധാരണ ആവശ്യങ്ങൾ:
+                    {t.popularTasksTitle}
                   </p>
-                  {cat.popularTasks.slice(0, 3).map((task, i) => (
+                  {popularTasks.slice(0, 3).map((task, i) => (
                     <div key={i} className="flex items-start gap-1.5 text-xs text-stone-700">
                       <span className="text-emerald-600 font-bold mt-0.5">•</span>
                       <span className="line-clamp-1">{task}</span>
@@ -246,14 +302,14 @@ export default function CategorySelector({
                 {/* Bottom footer bar with pricing */}
                 <div className="mt-5 pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
                   <span className="text-stone-500">
-                    പരിശോധനാ ഫീസ്: <strong className="text-stone-800">{cat.startingPrice}</strong> മുതൽ
+                    {t.startingFrom}: <strong className="text-stone-800">{cat.startingPrice}</strong>
                   </span>
                   <span
                     className={`font-semibold inline-flex items-center gap-1 ${
                       isSelected ? 'text-emerald-700' : 'text-stone-400'
                     }`}
                   >
-                    <span>{isSelected ? 'തിരഞ്ഞെടുത്തു' : 'Select'}</span>
+                    <span>{isSelected ? t.selected : (language === 'ml' ? 'തിരഞ്ഞെടുക്കൂ' : 'Select')}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -262,15 +318,17 @@ export default function CategorySelector({
           })}
         </div>
 
-        {/* Secondary Categories (More services in Kochi) */}
+        {/* Secondary Categories */}
         <div className="mt-6">
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider text-center mb-4">
-            കൂടുതൽ സർവീസുകൾ (Additional Services):
+            {language === 'ml' ? 'കൂടുതൽ സർവീസുകൾ (Additional Services):' : 'Additional Handyman Services in Kochi:'}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {CATEGORIES.slice(3).map((cat) => {
               const isSelected = selectedCategory === cat.id;
               const Icon = cat.icon;
+              const name = language === 'ml' ? cat.nameMalayalam : cat.nameEnglish;
+              const subName = language === 'ml' ? cat.nameEnglish : cat.nameMalayalam;
 
               return (
                 <button
@@ -289,10 +347,10 @@ export default function CategorySelector({
                     <Icon className="w-4 h-4" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-stone-900 truncate font-malayalam">
-                      {cat.nameMalayalam}
+                    <p className={`text-sm font-bold text-stone-900 truncate ${language === 'ml' ? 'font-malayalam' : 'font-sans'}`}>
+                      {name}
                     </p>
-                    <p className="text-[11px] text-stone-500 truncate">{cat.nameEnglish}</p>
+                    <p className="text-[11px] text-stone-500 truncate">{subName}</p>
                   </div>
                   {isSelected && (
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />

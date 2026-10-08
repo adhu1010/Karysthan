@@ -9,7 +9,7 @@ export interface WaitlistEntry {
   email?: string;
   locality: string;
   category: string;
-  malayalam_description: string;
+  malayalam_description?: string;
   experience_years?: number;
   urgency?: 'emergency' | 'today' | 'this_week' | 'flexible';
   tools_available?: boolean | null;

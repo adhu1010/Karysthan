@@ -46,19 +46,23 @@ export const metadata: Metadata = {
   },
 };
 
+import { LanguageProvider } from '@/context/LanguageContext';
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ml" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="antialiased text-stone-900 bg-[#fcfdfa] selection:bg-emerald-200 selection:text-emerald-950">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );
