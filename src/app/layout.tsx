@@ -8,6 +8,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://karyasthan.in'),
   title: 'കാര്യസ്ഥൻ (Karyasthan) - കൊച്ചിയുടെ സ്വന്തം ഓൺ-ഡിമാൻഡ് സഹായം | Kochi Home Services',
   description:
     'കൊച്ചിയിലെ വീടുകൾക്കായി വിശ്വസ്തരായ പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, കാർപെന്റർ ചേട്ടന്മാർ 30 മിനിറ്റിൽ വാതിൽപ്പടിയിൽ. On-demand task marketplace in Kochi, Kerala for Plumbing, Electrical, and Carpentry.',
@@ -24,6 +25,25 @@ export const metadata: Metadata = {
     'Kerala task marketplace',
   ],
   authors: [{ name: 'Karyasthan Technologies Kochi' }],
+  openGraph: {
+    title: 'കാര്യസ്ഥൻ (Karyasthan) - കൊച്ചിയുടെ സ്വന്തം ഓൺ-ഡിമാൻഡ് സഹായം',
+    description:
+      'കൊച്ചിയിലെ വീടുകൾക്കായി വിശ്വസ്തരായ പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, കാർപെന്റർ ചേട്ടന്മാർ 30 മിനിറ്റിൽ വാതിൽപ്പടിയിൽ. ചേരൂ വെയ്റ്റ്‌ലിസ്റ്റിൽ!',
+    url: 'https://karyasthan.in',
+    siteName: 'കാര്യസ്ഥൻ (Karyasthan)',
+    locale: 'ml_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'കാര്യസ്ഥൻ (Karyasthan) - Kochi On-demand Task Marketplace',
+    description:
+      'Verified plumbers, electricians, and carpenters in Kochi, Kerala. 30-minute arrival.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

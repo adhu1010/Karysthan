@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS public.waitlist_entries (
     malayalam_description TEXT,
     experience_years INTEGER,
     urgency TEXT DEFAULT 'flexible',
-    tools_available BOOLEAN DEFAULT true,
+    tools_available BOOLEAN DEFAULT NULL,
     status TEXT DEFAULT 'pending'
 );
 

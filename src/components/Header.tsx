@@ -69,7 +69,7 @@ export default function Header({ onOpenSetupModal }: HeaderProps) {
 
         {/* Center navigation links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
-          <a href="#categories" className="hover:text-emerald-700 transition-colors">
+          <a href="#category-section" className="hover:text-emerald-700 transition-colors">
             സേവനങ്ങൾ <span className="text-xs text-stone-400">(Services)</span>
           </a>
           <a href="#how-it-works" className="hover:text-emerald-700 transition-colors">

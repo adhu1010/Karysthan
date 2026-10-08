@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   MessageSquare, 
   Mic, 
@@ -61,7 +61,18 @@ export default function MalayalamInputBox({
   const [showHelper, setShowHelper] = useState(false);
   const [speechNotice, setSpeechNotice] = useState<string | null>(null);
 
-  // Check speech recognition capability
+  const recognitionRef = useRef<any>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const setTimedNotice = (text: string, durationMs: number = 3000) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setSpeechNotice(text);
+    timeoutRef.current = setTimeout(() => {
+      setSpeechNotice(null);
+    }, durationMs);
+  };
+
+  // Check speech recognition capability & clean up on unmount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition =
@@ -70,12 +81,36 @@ export default function MalayalamInputBox({
         setSpeechSupported(true);
       }
     }
+
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // ignore
+        }
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   const handleVoiceInput = () => {
+    // If currently listening, stop it gracefully
+    if (isListening && recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        // ignore
+      }
+      setIsListening(false);
+      setTimedNotice('വോയ്സ് ടൈപ്പിംഗ് നിർത്തി (Stopped)', 2000);
+      return;
+    }
+
     if (!speechSupported) {
-      setSpeechNotice('നിങ്ങളുടെ ബ്രൗസറിൽ മൈക്രോഫോൺ സ്പീച്ച് സപ്പോർട്ടില്ല. ദയവായി നേരിട്ട് ടൈപ്പ് ചെയ്യുക.');
-      setTimeout(() => setSpeechNotice(null), 4000);
+      setTimedNotice('നിങ്ങളുടെ ബ്രൗസറിൽ മൈക്രോഫോൺ സ്പീച്ച് സപ്പോർട്ടില്ല. ദയവായി നേരിട്ട് ടൈപ്പ് ചെയ്യുക.', 4000);
       return;
     }
 
@@ -89,27 +124,26 @@ export default function MalayalamInputBox({
       recognition.lang = 'ml-IN'; // Malayalam India
       recognition.continuous = false;
       recognition.interimResults = false;
+      recognitionRef.current = recognition;
 
       recognition.onstart = () => {
         setIsListening(true);
-        setSpeechNotice('മലയാളത്തിൽ സംസാരിക്കൂ... (Listening in Malayalam)');
+        setTimedNotice('മലയാളത്തിൽ സംസാരിക്കൂ... (Listening in Malayalam)', 6000);
       };
 
       recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
+        const transcript = event.results?.[0]?.[0]?.transcript;
         if (transcript) {
           const newVal = value ? `${value} ${transcript}` : transcript;
           onChange(newVal);
-          setSpeechNotice(`ചേർത്തു: "${transcript}"`);
-          setTimeout(() => setSpeechNotice(null), 3000);
+          setTimedNotice(`ചേർത്തു: "${transcript}"`, 3000);
         }
       };
 
       recognition.onerror = (err: any) => {
         console.warn('Speech recognition error:', err);
         setIsListening(false);
-        setSpeechNotice('ശബ്ദം വ്യക്തമായില്ല, ദയവായി വീണ്ടും ശ്രമിക്കുക.');
-        setTimeout(() => setSpeechNotice(null), 3000);
+        setTimedNotice('ശബ്ദം വ്യക്തമായില്ല, ദയവായി വീണ്ടും ശ്രമിക്കുക.', 3000);
       };
 
       recognition.onend = () => {
@@ -141,7 +175,10 @@ export default function MalayalamInputBox({
     <div className="w-full space-y-2">
       {/* Label and Voice typing toggle */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <label className="text-sm font-semibold text-stone-800 flex items-center gap-2 font-malayalam">
+        <label 
+          htmlFor="malayalam-description-input" 
+          className="text-sm font-semibold text-stone-800 flex items-center gap-2 font-malayalam"
+        >
           <MessageSquare className="w-4 h-4 text-emerald-700" />
           <span>{label}</span>
           {required && <span className="text-red-500">*</span>}
@@ -213,6 +250,7 @@ export default function MalayalamInputBox({
       {/* Textarea container */}
       <div className="relative rounded-xl border border-stone-300 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-500/20 bg-white transition-all shadow-2xs">
         <textarea
+          id="malayalam-description-input"
           rows={4}
           value={value}
           onChange={(e) => onChange(e.target.value)}

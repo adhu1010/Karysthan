@@ -12,7 +12,7 @@ export interface WaitlistEntry {
   malayalam_description: string;
   experience_years?: number;
   urgency?: 'emergency' | 'today' | 'this_week' | 'flexible';
-  tools_available?: boolean;
+  tools_available?: boolean | null;
 }
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -44,15 +44,14 @@ export async function submitWaitlistEntry(entry: Omit<WaitlistEntry, 'id' | 'cre
   // If Supabase is connected
   if (isSupabaseConfigured() && supabase) {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('waitlist_entries')
         .insert([
           {
             ...entry,
             created_at: new Date().toISOString(),
           },
-        ])
-        .select();
+        ]);
 
       if (error) {
         console.error('Supabase error inserting waitlist entry:', error);
@@ -68,7 +67,6 @@ export async function submitWaitlistEntry(entry: Omit<WaitlistEntry, 'id' | 'cre
         success: true,
         message: 'വിജയകരമായി രജിസ്റ്റർ ചെയ്തു! ഞങ്ങളുടെ ടീം ഉടൻ വിളിക്കും.',
         isMock: false,
-        data,
       };
     } catch (err: any) {
       console.error('Unexpected error inserting waitlist entry:', err);

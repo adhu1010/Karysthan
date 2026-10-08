@@ -97,6 +97,16 @@ export default function WaitlistForm({
     }
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let raw = e.target.value.replace(/\D/g, '');
+    if (raw.startsWith('91') && raw.length > 10) {
+      raw = raw.slice(2);
+    } else if (raw.startsWith('0') && raw.length > 10) {
+      raw = raw.slice(1);
+    }
+    setPhone(raw.slice(0, 10));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -108,8 +118,8 @@ export default function WaitlistForm({
     }
 
     const cleanPhone = phone.replace(/[^0-9]/g, '');
-    if (cleanPhone.length < 10) {
-      setErrorMessage('ദയവായി സാധുവായ 10 അക്ക ഫോൺ നമ്പർ നൽകുക (Please enter a valid 10-digit phone number)');
+    if (cleanPhone.length !== 10 || !/^[6-9]\d{9}$/.test(cleanPhone)) {
+      setErrorMessage('ദയവായി സാധുവായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക (Please enter a valid 10-digit Indian mobile number)');
       return;
     }
 
@@ -125,7 +135,7 @@ export default function WaitlistForm({
       malayalam_description: malayalamDescription.trim() || 'വിവരണം നൽകിയിട്ടില്ല',
       experience_years: activeRole === 'technician' ? experienceYears : undefined,
       urgency: activeRole === 'customer' ? urgency : undefined,
-      tools_available: activeRole === 'technician' ? toolsAvailable : undefined,
+      tools_available: activeRole === 'technician' ? toolsAvailable : null,
     };
 
     try {
@@ -356,12 +366,13 @@ export default function WaitlistForm({
                         <span>+91</span>
                       </div>
                       <input
+                        id="phone-input"
                         type="tel"
                         required
-                        maxLength={10}
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={handlePhoneChange}
                         placeholder="98470 12345"
+                        autoComplete="tel-national"
                         className="w-full pl-16 pr-4 py-2.5 rounded-xl border border-stone-300 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 transition-all font-mono"
                       />
                     </div>

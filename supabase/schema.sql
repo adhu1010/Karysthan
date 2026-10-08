@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.waitlist_entries (
     english_translation TEXT,
     experience_years INTEGER,
     urgency TEXT DEFAULT 'flexible' CHECK (urgency IN ('emergency', 'today', 'this_week', 'flexible')),
-    tools_available BOOLEAN DEFAULT true,
+    tools_available BOOLEAN DEFAULT NULL,
     status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'verified', 'onboarded'))
 );
 

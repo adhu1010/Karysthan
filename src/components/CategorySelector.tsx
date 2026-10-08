@@ -186,8 +186,17 @@ export default function CategorySelector({
             return (
               <div
                 key={cat.id}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isSelected}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`relative rounded-2xl p-6 transition-all duration-200 cursor-pointer text-left bg-white border-2 shadow-sm hover:shadow-md ${
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSelectCategory(cat.id);
+                  }
+                }}
+                className={`relative rounded-2xl p-6 transition-all duration-200 cursor-pointer text-left bg-white border-2 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-500/40 ${
                   isSelected
                     ? `${cat.activeBorder} ${cat.activeBg} scale-[1.02]`
                     : `border-stone-200/80 hover:border-stone-300`
